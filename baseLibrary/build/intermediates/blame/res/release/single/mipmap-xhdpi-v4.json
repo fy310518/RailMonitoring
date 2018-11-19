@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\build\\intermediates\\res\\merged\\release\\mipmap-xhdpi-v4\\img_load_default.png",
+        "source": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\src\\main\\res\\mipmap-xhdpi\\img_load_default.png"
+    },
+    {
+        "merged": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\build\\intermediates\\res\\merged\\release\\mipmap-xhdpi-v4\\img_loading.png",
+        "source": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\src\\main\\res\\mipmap-xhdpi\\img_loading.png"
+    },
+    {
+        "merged": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\build\\intermediates\\res\\merged\\release\\mipmap-xhdpi-v4\\img_load_error.png",
+        "source": "D:\\Android\\WorkSpase\\wanAndroid\\baseLibrary\\src\\main\\res\\mipmap-xhdpi\\img_load_error.png"
+    }
+]

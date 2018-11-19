@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- dialog 加载动画图片 宽度、高度 -->
+    <dimen name="load_anim">60dp</dimen>
+
+    <!-- 自定义 列表刷新控件 高度 -->
+    <dimen name="refreshHeight">75dp</dimen>
+    <!-- 最大偏移 -->
+    <dimen name="max_offset">120dp</dimen>
+    <!-- 下拉刷新 下拉图标 宽度、高度 -->
+    <dimen name="rvDropDown">50dp</dimen>
+    <!-- 下拉刷新 加载动画 图片 宽度、高度 -->
+    <dimen name="rvRefreshAnim">30dp</dimen>
+    <!-- 加载更多控件高度 -->
+    <dimen name="loadMoreHeight">40dp</dimen>
+
+</resources>

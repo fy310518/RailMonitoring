@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
+
+    <View
+        android:id="@+id/headView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/kernel"
+        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgUserHead"
+        android:layout_width="@dimen/dp_75"
+        android:layout_height="@dimen/dp_75"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="大王"
+        android:textColor="@color/white"
+        android:textSize="@dimen/txt_small"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgUserHead" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:divider="@drawable/app_divider"
+        android:dividerPadding="@dimen/dp_35"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dp_35"
+        android:paddingTop="@dimen/dp_55"
+        android:showDividers="middle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line">
+
+            <!--android:drawableStart="@drawable/main_my_svg_info"-->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnMyInfo"
+            style="@style/main_my_more"
+            android:layout_marginEnd="@dimen/dp_35"
+            android:drawablePadding="@dimen/drawablePadding"
+            android:text="@string/userInfo"/>
+
+            <!--android:drawableStart="@drawable/main_my_svg_about"-->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnMyAbout"
+            style="@style/main_my_more"
+            android:layout_marginEnd="@dimen/dp_35"
+            android:drawablePadding="@dimen/drawablePadding"
+            android:text="@string/about" />
+
+            <!--android:drawableStart="@drawable/main_my_svg_close"-->
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnMyClose"
+            style="@style/main_my_more"
+            android:layout_marginEnd="@dimen/dp_35"
+            android:drawablePadding="@dimen/drawablePadding"
+            android:text="@string/close" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

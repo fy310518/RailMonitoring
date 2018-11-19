@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/rippleColor">
+
+    <!--如果不指定id为@android:id/mask，那么在显示的时候会显示出item指定的drawable。-->
+    <!--如果指定id为@android:id/mask，那么默认是不会显示该drawable，而是在点击的时候出现。-->
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white"/>
+        </shape>
+    </item>
+
+</ripple>

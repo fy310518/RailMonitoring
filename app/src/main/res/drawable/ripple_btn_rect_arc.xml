@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="30" android:exitFadeDuration="20">
+
+    <item android:state_pressed="true">
+        <layer-list>
+            <!-- 阴影 -->
+            <item>
+                <shape>
+                    <solid android:color="#d7defa" />
+                    <corners android:radius="@dimen/shapeRadiusLarge" />
+                </shape>
+            </item>
+
+            <!-- 前景 -->
+            <item
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp">
+                <shape>
+                    <gradient
+                        android:angle="0"
+                        android:endColor="#7e95f2"
+                        android:startColor="#a6b8f8" />
+
+                    <corners android:radius="@dimen/shapeRadiusLarge" />
+                </shape>
+            </item>
+        </layer-list>
+
+    </item>
+
+    <item android:drawable="@drawable/app_layer_btn_match" />
+
+</selector>

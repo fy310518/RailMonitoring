@@ -1,1 +1,1 @@
-include ':app', ':baseLibrary'
+include ':app', ':baseLibrary', ':excelcreator'

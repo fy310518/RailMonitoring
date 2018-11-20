@@ -1,6 +1,5 @@
 package com.fy.rail.main;
 
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.fy.baselibrary.base.ViewHolder;
 import com.fy.baselibrary.base.dialog.CommonDialog;
 import com.fy.baselibrary.base.dialog.DialogConvertListener;
 import com.fy.baselibrary.base.dialog.NiceDialog;
-import com.fy.baselibrary.rv.adapter.OnListener;
 import com.fy.baselibrary.utils.TimeUtils;
 import com.fy.rail.R;
 
@@ -51,7 +49,6 @@ public class MainInputFragment extends BaseFragment {
     protected void baseInit() {
         tvDate.setText(TimeUtils.Long2DataString(System.currentTimeMillis(), "yyyy-MM-dd"));
 
-
     }
 
     @OnClick({R.id.tvDirection, R.id.editNumKm, R.id.editTrackNum, R.id.btnSave})
@@ -67,7 +64,7 @@ public class MainInputFragment extends BaseFragment {
             case R.id.editTrackNum://轨道号
                 numKmSelect(getDatas(1, 40, ""), editTrackNum);
                 break;
-            case R.id.btnSave://保存
+            case R.id.btnSave://保存到数据库
 
                 break;
         }
@@ -118,4 +115,5 @@ public class MainInputFragment extends BaseFragment {
 
         return datas;
     }
+
 }

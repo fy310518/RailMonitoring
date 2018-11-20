@@ -22,4 +22,17 @@
 
     <string name="up">上行</string>
     <string name="down">下行</string>
+
+    <string name="exportExcel">导出 Excel</string>
+
+
+
+    <string-array name="titleArray">
+        <item>日期</item>
+        <item>行别</item>
+        <item>千米数</item>
+        <item>轨道号</item>
+        <item>描述</item>
+        <item>其它</item>
+    </string-array>
 </resources>

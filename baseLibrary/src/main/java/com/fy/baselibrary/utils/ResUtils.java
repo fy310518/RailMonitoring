@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
@@ -68,6 +69,15 @@ public class ResUtils {
      */
     public static String getStr(@StringRes int stringId) {
         return ConfigUtils.getAppCtx().getString(stringId);
+    }
+
+    /**
+     * 获取 strings 资源文件 指定 id 的资源
+     * @param strArrayId 资源数组id
+     * @return String[]
+     */
+    public static String[] getStrArray(@ArrayRes int strArrayId){
+        return ConfigUtils.getAppCtx().getResources().getStringArray(strArrayId);
     }
 
     /**

@@ -11,14 +11,21 @@ import com.fy.baselibrary.base.ViewHolder;
 import com.fy.baselibrary.base.dialog.CommonDialog;
 import com.fy.baselibrary.base.dialog.DialogConvertListener;
 import com.fy.baselibrary.base.dialog.NiceDialog;
+import com.fy.baselibrary.utils.T;
 import com.fy.baselibrary.utils.TimeUtils;
 import com.fy.rail.R;
+import com.fy.rail.bean.Record;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * describe 首页
@@ -65,7 +72,32 @@ public class MainInputFragment extends BaseFragment {
                 numKmSelect(getDatas(1, 40, ""), editTrackNum);
                 break;
             case R.id.btnSave://保存到数据库
+                Record record = new Record();
+                record.setSaveDate(tvDate.getText().toString().trim());
+                record.setDirection(tvDirection.getText().toString().trim());
+                record.setNumOfKm(editNumKm.getText().toString().trim());
+                record.setTrackNum(editTrackNum.getText().toString().trim());
+                record.setAbnormityDesc(editAbnormityDesc.getText().toString().trim());
+                record.setOtherDesc(editOther.getText().toString().trim());
 
+                Observable.just(record)
+                        .map(new Function<Record, Boolean>() {
+                            @Override
+                            public Boolean apply(Record record) throws Exception {
+                                return record.save();
+                            }
+                        }).subscribeOn(Schedulers.io())//指定的是上游发送事件的线程
+                        .observeOn(AndroidSchedulers.mainThread())//指定的是下游接收事件的线程
+                        .subscribe(new Consumer<Boolean>() {
+                            @Override
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean) {
+                                    T.showLong("存储成功！！！");
+                                } else {
+                                    T.showLong("存储失败！！！");
+                                }
+                            }
+                        });
                 break;
         }
     }

@@ -1,18 +1,18 @@
 package com.fy.rail;
 
-import android.app.Application;
-
 import com.fy.baselibrary.application.BaseActivityLifecycleCallbacks;
 import com.fy.baselibrary.ioc.ConfigUtils;
 import com.fy.baselibrary.utils.L;
 import com.fy.baselibrary.utils.ResUtils;
 import com.fy.baselibrary.utils.ScreenUtils;
 
+import org.litepal.LitePalApplication;
+
 /**
  * 应用 Application
  * Created by fangs on 2018/10/23 10:39.
  */
-public class RailApplication extends Application {
+public class RailApplication extends LitePalApplication {
 
     @Override
     public void onCreate() {

@@ -41,7 +41,6 @@ import jxl.write.WriteException;
  * Created by fangs on 2018/11/19 11:38.
  */
 public class MainExportFragment extends BaseFragment {
-
     StringBuilder fileName = new StringBuilder();
 
     @BindView(R.id.tvStartDate)
@@ -76,6 +75,9 @@ public class MainExportFragment extends BaseFragment {
                 selectDirection();
                 break;
             case R.id.btnExport://导出 Excel
+                fileName.delete(0, fileName.length());
+                fileName.append(tvDirection.getText().toString().trim())
+                        .append(tvEndDate.getText().toString().trim());
                 createExcel(fileName.toString());
 
                 StringBuilder excelFile = new StringBuilder();

@@ -1,5 +1,6 @@
 package com.fy.rail.main;
 
+import android.annotation.SuppressLint;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,32 +73,12 @@ public class MainInputFragment extends BaseFragment {
                 numKmSelect(getDatas(1, 40, ""), editTrackNum);
                 break;
             case R.id.btnSave://保存到数据库
-                Record record = new Record();
-                record.setSaveDate(tvDate.getText().toString().trim());
-                record.setDirection(tvDirection.getText().toString().trim());
-                record.setNumOfKm(editNumKm.getText().toString().trim());
-                record.setTrackNum(editTrackNum.getText().toString().trim());
-                record.setAbnormityDesc(editAbnormityDesc.getText().toString().trim());
-                record.setOtherDesc(editOther.getText().toString().trim());
-
-                Observable.just(record)
-                        .map(new Function<Record, Boolean>() {
-                            @Override
-                            public Boolean apply(Record record) throws Exception {
-                                return record.save();
-                            }
-                        }).subscribeOn(Schedulers.io())//指定的是上游发送事件的线程
-                        .observeOn(AndroidSchedulers.mainThread())//指定的是下游接收事件的线程
-                        .subscribe(new Consumer<Boolean>() {
-                            @Override
-                            public void accept(Boolean aBoolean) throws Exception {
-                                if (aBoolean) {
-                                    T.showLong("存储成功！！！");
-                                } else {
-                                    T.showLong("存储失败！！！");
-                                }
-                            }
-                        });
+                for (int i = 1; i < 30; i++) {
+                    runSaveDB(i);
+                    runSaveDB(i);
+                    runSaveDB(i);
+                    runSaveDB(i);
+                }
                 break;
         }
     }
@@ -147,5 +128,36 @@ public class MainInputFragment extends BaseFragment {
 
         return datas;
     }
+
+    /**
+     * 保存数据到数据库
+     */
+    @SuppressLint("CheckResult")
+    private void runSaveDB(int i){
+        Record record = new Record();
+        record.setSaveDate("2018-11-" + i);
+        record.setDirection(tvDirection.getText().toString().trim());
+        record.setNumOfKm(editNumKm.getText().toString().trim());
+        record.setTrackNum(editTrackNum.getText().toString().trim());
+        record.setAbnormityDesc(editAbnormityDesc.getText().toString().trim() + i);
+        record.setOtherDesc(editOther.getText().toString().trim() + i);
+
+        Observable.just(record)
+                .map(new Function<Record, Boolean>() {
+                    @Override
+                    public Boolean apply(Record record) throws Exception {
+                        return record.save();
+                    }
+                }).subscribeOn(Schedulers.io())//指定的是上游发送事件的线程
+                .observeOn(AndroidSchedulers.mainThread())//指定的是下游接收事件的线程
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        T.showLong("存储成功！！！");
+                    } else {
+                        T.showLong("存储失败！！！");
+                    }
+                });
+    }
+
 
 }

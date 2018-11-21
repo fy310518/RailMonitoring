@@ -1,6 +1,7 @@
 package com.fy.rail.main;
 
 import android.Manifest;
+import android.database.Cursor;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,14 @@ import com.fy.excelcreator.ColourUtil;
 import com.fy.excelcreator.ZzExcelCreator;
 import com.fy.excelcreator.ZzFormatCreator;
 import com.fy.rail.R;
+import com.fy.rail.bean.Record;
+
+import org.litepal.LitePal;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -86,7 +92,14 @@ public class MainExportFragment extends BaseFragment {
                 for (int i = 0; i < titleArray.length; i++){
                     addData(excelFile.toString(), 0, i, titleArray[i]);
                 }
+
+                Cursor cursor = LitePal.findBySQL("select * from record where direction = ? and (saveDate between ? and ?) order by saveDate, numOfKm, trackNum asc",
+                        tvDirection.getText().toString().trim(),
+                        tvStartDate.getText().toString().trim(),
+                        tvEndDate.getText().toString().trim()
+                        );
                 T.showLong("导出 Excel 成功！！！");
+
                 break;
         }
     }

@@ -4,6 +4,8 @@
 
     <version value="1" />
 
+    <storage value="external"/>
+
     <list>
         <mapping class="com.fy.rail.bean.Record" />
     </list>

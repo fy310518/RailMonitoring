@@ -73,12 +73,7 @@ public class MainInputFragment extends BaseFragment {
                 numKmSelect(getDatas(1, 40, ""), editTrackNum);
                 break;
             case R.id.btnSave://保存到数据库
-                for (int i = 1; i < 30; i++) {
-                    runSaveDB(i);
-                    runSaveDB(i);
-                    runSaveDB(i);
-                    runSaveDB(i);
-                }
+                runSaveDB(12);
                 break;
         }
     }

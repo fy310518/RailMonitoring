@@ -24,6 +24,7 @@
     <string name="down">下行</string>
 
     <string name="exportExcel">导出 Excel</string>
+    <string name="excelLoading">正在导入数据&#8230;</string>
 
 
 

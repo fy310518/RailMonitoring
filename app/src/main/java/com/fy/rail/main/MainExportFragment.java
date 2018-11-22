@@ -2,6 +2,7 @@ package com.fy.rail.main;
 
 import android.Manifest;
 import android.database.Cursor;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +23,25 @@ import com.fy.excelcreator.ZzExcelCreator;
 import com.fy.excelcreator.ZzFormatCreator;
 import com.fy.rail.R;
 import com.fy.rail.bean.Record;
+import com.fy.rail.dialog.NetCallBack;
+import com.fy.rail.dialog.NetDialog;
 
 import org.litepal.LitePal;
 import org.litepal.crud.LitePalSupport;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import jxl.format.Alignment;
 import jxl.format.Border;
 import jxl.format.BorderLineStyle;
@@ -90,15 +100,51 @@ public class MainExportFragment extends BaseFragment {
                 excelFile.append(FileUtils.getPath("铁路", 2)).append("/").append(fileName).append(".xls");
                 String[] titleArray = ResUtils.getStrArray(R.array.titleArray);
                 for (int i = 0; i < titleArray.length; i++){
-                    addData(excelFile.toString(), 0, i, titleArray[i]);
+                    addExcelTitle(excelFile.toString(), 0, i, titleArray[i]);
                 }
 
-                Cursor cursor = LitePal.findBySQL("select * from record where direction = ? and (saveDate between ? and ?) order by saveDate, numOfKm, trackNum asc",
-                        tvDirection.getText().toString().trim(),
-                        tvStartDate.getText().toString().trim(),
-                        tvEndDate.getText().toString().trim()
-                        );
-                T.showLong("导出 Excel 成功！！！");
+                Observable.just("")
+                        .map(new Function<String, Cursor>() {
+                            @Override
+                            public Cursor apply(String record) throws Exception {
+                                return LitePal.findBySQL("select * from record where direction = ? and (saveDate between ? and ?) order by saveDate, numOfKm, trackNum asc",
+                                        tvDirection.getText().toString().trim(),
+                                        tvStartDate.getText().toString().trim(),
+                                        tvEndDate.getText().toString().trim()
+                                );
+                            }
+                        }).map(new Function<Cursor, Boolean>() {
+                            @Override
+                            public Boolean apply(Cursor cursor) throws Exception {
+                                for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+                                    String[] contentArray = new String[6];
+                                    contentArray[0] = cursor.getString(cursor.getColumnIndex("savedate"));
+                                    contentArray[1] = cursor.getString(cursor.getColumnIndex("direction"));
+                                    contentArray[2] = cursor.getString(cursor.getColumnIndex("numofkm"));
+                                    contentArray[3] = cursor.getString(cursor.getColumnIndex("tracknum"));
+                                    contentArray[4] = cursor.getString(cursor.getColumnIndex("abnormitydesc"));
+                                    contentArray[5] = cursor.getString(cursor.getColumnIndex("otherdesc"));
+
+                                    for (int l = 0; l < 6; l++){
+                                        addExcelContent(excelFile.toString(), cursor.getPosition() + 1, l, contentArray[l]);
+                                    }
+                                }
+
+                                cursor.close();
+                                return true;
+                            }
+                        }).subscribeOn(Schedulers.io())//指定的是上游发送事件的线程
+                        .observeOn(AndroidSchedulers.mainThread())//指定的是下游接收事件的线程
+                        .subscribe(new NetCallBack<Boolean>(new NetDialog().init((AppCompatActivity) getActivity()).setDialogMsg(R.string.user_login)) {
+                            @Override
+                            protected void onSuccess(Boolean t) {
+                                T.showLong("导出成功！！！");
+                            }
+
+                            @Override
+                            protected void updataLayout(int flag) {
+                            }
+                        });
 
                 break;
         }
@@ -155,7 +201,41 @@ public class MainExportFragment extends BaseFragment {
     /**
      * 向指定的 Excel 文件添加一条数据
      */
-    private void addData(String filePath, int row, int col, String content){
+    private void addExcelTitle(String filePath, int row, int col, String content){
+        try {
+            ZzExcelCreator.getInstance()
+                    .openExcel(new File(filePath))  //打开Excel文件
+                    .openSheet(0);
+
+            //设置单元格内容格式
+            WritableCellFormat format = ZzFormatCreator
+                    .getInstance()
+                    .createCellFont(WritableFont.ARIAL)  //设置字体
+                    .setAlignment(Alignment.CENTRE, VerticalAlignment.CENTRE)  //设置对齐方式(水平和垂直)
+                    .setFontSize(18)                    //设置字体大小
+                    .setFontColor(Colour.BLACK)          //设置字体颜色
+                    .setFontBold(true)                  //设置是否加粗，默认false
+//                    .setUnderline(true)                 //设置是否画下划线，默认false
+                    //.setDoubleUnderline(true)         //设置是否画双重下划线，默认false,和setUnderline只有一个生效
+//                    .setItalic(true)                    //设置是否斜体
+                    .setWrapContent(true, 500)          //设置是否自适应宽高，如果自适应，必须设置最大列宽（不能太大，否则可能无效）。
+//                    .setBackgroundColor(ColourUtil.getCustomColor1("#99cc00"))  //设置单元格背景颜色，如果不设置边框，边框色会和背景色一致。
+                    .setBorder(Border.ALL, BorderLineStyle.THIN, ColourUtil.getCustomColor2("#dddddd"))  //设置边框样式
+                    .getCellFormat();
+
+            ZzExcelCreator.getInstance()
+                    .setColumnWidth(col, content.getBytes().length)   //设置列宽(如果自适应宽度，代表内容字节的长度,即str.getBytes().length)
+                    .setRowHeight(row, 300)    //设置行高
+                    .fillContent(col, row, content, format)  //填入字符串
+//                    .fillNumber(colInt, rowInt, Double.parseDouble(str), format)  //填入数字
+                    .close();
+
+        } catch (IOException | BiffException | WriteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addExcelContent(String filePath, int row, int col, String content){
         try {
             ZzExcelCreator.getInstance()
                     .openExcel(new File(filePath))  //打开Excel文件
@@ -167,11 +247,11 @@ public class MainExportFragment extends BaseFragment {
                     .createCellFont(WritableFont.ARIAL)  //设置字体
                     .setAlignment(Alignment.CENTRE, VerticalAlignment.CENTRE)  //设置对齐方式(水平和垂直)
                     .setFontSize(14)                    //设置字体大小
-                    .setFontColor(Colour.ROSE)          //设置字体颜色
-                    .setFontBold(true)                  //设置是否加粗，默认false
-                    .setUnderline(true)                 //设置是否画下划线，默认false
+                    .setFontColor(Colour.BLACK)          //设置字体颜色
+//                    .setFontBold(true)                  //设置是否加粗，默认false
+//                    .setUnderline(true)                 //设置是否画下划线，默认false
                     //.setDoubleUnderline(true)         //设置是否画双重下划线，默认false,和setUnderline只有一个生效
-                    .setItalic(true)                    //设置是否斜体
+//                    .setItalic(true)                    //设置是否斜体
                     .setWrapContent(true, 100)          //设置是否自适应宽高，如果自适应，必须设置最大列宽（不能太大，否则可能无效）。
 //                    .setBackgroundColor(ColourUtil.getCustomColor1("#99cc00"))  //设置单元格背景颜色，如果不设置边框，边框色会和背景色一致。
                     .setBorder(Border.ALL, BorderLineStyle.THIN, ColourUtil.getCustomColor2("#dddddd"))  //设置边框样式
